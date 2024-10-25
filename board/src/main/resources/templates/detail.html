@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>상세화면</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<!-- nav-bar-section start -->
+<section class="nav-bar-section">
+    <div class="left-box">
+        <div class="logo-box">
+            <a href="#">Memo note</a>
+        </div>
+        <ul class="left-nav">
+            <li><a href="#">게시판</a></li>
+
+
+        </ul>
+    </div>
+    <div class="right-box">
+        <ul class="right-nav">
+            <li><a href="#">로그인</a></li>
+        </ul>
+    </div>
+</section>
+<!-- nav-bar-section end -->
+
+<!-- board-detail-section start -->
+<section class="board-detail-section">
+    <div class="board-detail-header">
+        <div class="title-box">
+            <div class="title-category">
+                게시판
+            </div>
+            <div class="title-subject">
+                제목
+            </div>
+        </div>
+        <div class="sub-box">
+            <div class="sub-left-box">
+                <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+                <div class="profile-name">오길환</div>
+                <div class="create-date">23.06.03 18:42</div>
+                <div class="modify-btn">
+                    <span><i class="fa-solid fa-eraser"></i></span>
+                </div>
+                <div class="delete-btn">
+                    <span><i class="fa-solid fa-trash"></i></span>
+                </div>
+            </div>
+            <div class="sub-right-box">
+                <div class="view-count">
+                    <span><i class="fa-solid fa-eye"></i></span>
+                    <span>21</span>
+                </div>
+                <div class="vote-count">
+                    <span><i class="fa-solid fa-thumbs-up"></i></span>
+                    <span>11</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="board-detail-body">
+        <div class="board-detail-content">
+			<span>
+			내용
+			</span>
+        </div>
+        <div class="vote-btn btn">
+            <span><i class="fa-solid fa-thumbs-up"></i></span>
+            <span>11</span>
+        </div>
+    </div>
+</section>
+<!-- board-detail-section end -->
+
+
+
+</body>
+<style>
+    /* font */
+* {
+	font-family: "Noto Sans KR", sans-serif;
+}
+
+/* normalize */
+body,
+ul,
+li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+h1,h2,h3,h4,h5,h6 {
+	margin-bottom: 0;
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+input:focus,
+select:focus,
+option:focus,
+textarea:focus,
+button:focus {
+	outline: none;
+}
+section {
+	width: 1000px;
+	margin: 0 auto;
+	/* 	border: 1px solid rgb(0, 0, 0, 0.3); */
+}
+.btn {
+	background-color: gray;
+	padding: 8px 16px;
+	border-radius: 5px;
+	color: white;
+}
+.btn-sm {
+	background-color: gray;
+	padding: 5px 10px;
+	border-radius: 5px;
+	color: white;
+}
+.sort-btn {
+	border: none;
+	color: rgb(128, 128, 128);
+	background-color: rgb();
+}
+.search-btn {
+	color: black;
+	font-size: 0.9rem;
+	margin: 0 10px;
+}
+.comment-number {
+	color: rgb(128, 128, 128);
+}
+.page-list {
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.page-list > li {
+	/* 	border: 1px solid red; */
+	width: 35px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 0.8rem;
+	color: rgb(128, 128, 128);
+	text-align: center;
+	border-top: 1px solid rgb(128, 128, 128);
+	border-bottom: 1px solid rgb(128, 128, 128);
+	border-left: 1px solid rgb(128, 128, 128);
+}
+.page-list > li.page-start {
+	border-top-left-radius: 0.3rem;
+	border-bottom-left-radius: 0.3rem;
+}
+.page-list > li.page-end {
+	border-right: 1px solid rgb(128, 128, 128);
+	border-top-right-radius: 0.3rem;
+	border-bottom-right-radius: 0.3rem;
+}
+.page-list > li.page-active {
+	color: rgba(0, 0, 0);
+	font-weight: bold;
+}
+
+/* nav-bar-section css */
+.nav-bar-section {
+	height: 90px;
+	/* 	border: 1px solid red; */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.nav-bar-section > .left-box {
+	display: flex;
+}
+.nav-bar-section > .left-box > .logo-box {
+	font-weight: bold;
+	font-size: 2.5rem;
+	line-height: 90px;
+}
+.nav-bar-section > .left-box > .left-nav > li {
+	display: inline-block;
+	line-height: 90px;
+	margin-left: 20px;
+}
+
+.nav-bar-section > .right-box > .right-nav > li {
+	display: inline-block;
+	line-height: 90px;
+	margin-left: 20px;
+}
+
+/* header-section css */
+.header-section > h2 {
+	/* 	border: 1px solid orange; */
+	margin: 40px 0;
+}
+.header-section > .category-box > h3 {
+	/* 	border: 1px solid green; */
+}
+.header-section > .category-box > .category-list {
+	/* 	border: 1px solid green; */
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: between;
+	margin: 10px 0;
+}
+.header-section > .category-box > .category-list > .category-text {
+	width: calc(100% / 6);
+}
+.header-section > .category-box > .category-list > .category-text > a {
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 0.5rem;
+	box-sizing: border-box;
+	margin: 5px;
+}
+
+/* board-detail-section css */
+.board-detail-section {
+	margin-top: 40px;
+}
+.board-detail-section > div {
+	padding: 15px;
+}
+.board-detail-section > .board-detail-header {
+	border-top: 2px solid rgb(128, 128, 128);
+	border-bottom: 3px double rgb(128, 128, 128);
+}
+.board-detail-section > .board-detail-header > .title-box {
+	display: flex;
+	font-size: 1.1rem;
+}
+.board-detail-section > .board-detail-header > .title-box > .title-category {
+	margin-right: 20px;
+}
+.board-detail-section > .board-detail-header > .title-box > .title-subject {
+	font-weight: bold;
+}
+
+.board-detail-section > .board-detail-header > .sub-box {
+	margin-top: 15px;
+	font-size: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.board-detail-section > .board-detail-header > .sub-box > .sub-left-box > div {
+	display: inline-block;
+}
+.board-detail-section
+	> .board-detail-header
+	> .sub-box
+	> .sub-left-box
+	> .profile-name {
+	margin-left: 5px;
+	margin-right: 10px;
+}
+.board-detail-section
+	> .board-detail-header
+	> .sub-box
+	> .sub-left-box
+	> .modify-btn {
+	margin-left: 10px;
+	margin-right: 5px;
+}
+
+.board-detail-section > .board-detail-header > .sub-box > .sub-right-box > div {
+	display: inline-block;
+}
+.board-detail-section
+	> .board-detail-header
+	> .sub-box
+	> .sub-right-box
+	> .vote-count {
+	margin: 0 5px;
+}
+
+.board-detail-section > .board-detail-body {
+	border-bottom: 1px solid rgb(128, 128, 128);
+	display: flex;
+	flex-direction: column;
+}
+.board-detail-section > .board-detail-body > .vote-btn {
+	margin: 30px auto 0 auto;
+}
+
+/* board-comment-section css */
+.board-comment-section > .board-comment-header {
+	padding: 15px;
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid rgb(128, 128, 128);
+}
+.board-comment-section > .board-comment-header > .header-left-box > div {
+	display: inline-block;
+}
+.board-comment-section
+	> .board-comment-header
+	> .header-left-box
+	> .sort-button-box {
+	margin-left: 10px;
+	font-size: 0;
+}
+
+.board-comment-section > .board-comment-list > .comment > .comment-box {
+	padding: 15px;
+	font-size: 0.9rem;
+	border-bottom: 1px solid rgb(128, 128, 128);
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-profile-box
+	> div {
+	display: inline-block;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-profile-box
+	> .profile-name {
+	margin-left: 3px;
+	margin-right: 6px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-profile-box
+	> .modify-btn {
+	margin-left: 6px;
+	margin-right: 3px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-content-box {
+	margin-top: 10px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-btn-box {
+	margin-top: 10px;
+	display: flex;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-btn-box
+	> .vote-btn {
+	margin-right: 5px;
+}
+
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box {
+	padding: 15px;
+	padding-left: 50px;
+	font-size: 0.9rem;
+	border-bottom: 1px solid rgb(128, 128, 128);
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-profile-box
+	> div {
+	display: inline-block;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-profile-box
+	> .profile-name {
+	margin-left: 3px;
+	margin-right: 6px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-profile-box
+	> .modify-btn {
+	margin-left: 6px;
+	margin-right: 3px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-content-box {
+	margin-top: 10px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-referer-box {
+	margin-top: 5px;
+	font-size: 0.8rem;
+	color: rgb(128, 128, 128);
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-btn-box {
+	margin-top: 10px;
+	display: flex;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-btn-box
+	> .vote-btn {
+	margin-right: 5px;
+}
+
+/* board-comment-write-section css */
+.board-comment-write-section > .write-box {
+	padding: 15px;
+	/* 	border-bottom: 1px solid rgba(0, 0, 0, 0.7); */
+	display: flex;
+	flex-direction: column;
+}
+.board-comment-write-section > .write-box > .write-btn {
+	margin: 15px 0 0 auto;
+}
+
+/* board-list-section css */
+.board-list-section > .list-header {
+	margin: 10px 0 10px 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+}
+.board-list-section > .list-header > .left-box > div {
+	display: inline-block;
+	margin-left: 5px;
+}
+.board-list-section > .list-header > .left-box > .list-paging-box > select {
+	border: 1px solid rgb(128, 128, 128);
+}
+.board-list-section > .list-header > .left-box > .sort-button-box {
+	font-size: 0;
+}
+.board-list-section > .list-header > .right-box {
+	margin-right: 5px;
+}
+.board-list-section > .list-header > .right-box > .write-btn {
+	border: none;
+}
+
+.board-list-section > .list-content > ul.head {
+	/* 	border-top: 2px solid rgba(0, 0, 0, 0.2); */
+	/* 	border-bottom: 2px solid rgba(0, 0, 0, 0.2); */
+	border-top: 2px solid rgb(128, 128, 128);
+	border-bottom: 2px solid rgb(128, 128, 128);
+}
+.board-list-section > .list-content > ul {
+	display: flex;
+	/* 	border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
+	border-bottom: 1px solid rgb(128, 128, 128);
+	height: 3rem;
+}
+.board-list-section > .list-content > ul > li {
+	display: inline-block;
+	text-align: center;
+	line-height: 3rem;
+	/* 		border: 1px solid green; */
+}
+.board-list-section > .list-content > ul > li.no {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.cate {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.title {
+	flex: 1 1 auto;
+}
+.board-list-section > .list-content > ul > li.content {
+	text-align: start;
+	padding-left: 3%;
+	flex: 1 1 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.board-list-section > .list-content > ul > li.author {
+	flex: 0 0 15%;
+}
+.board-list-section > .list-content > ul > li.create-date {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.view {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.heart {
+	flex: 0 0 8%;
+}
+
+.board-list-section > .list-footer {
+	margin: 0 0 15px 0;
+	text-align: center;
+}
+.board-list-section > .list-footer > .search-box {
+	font-size: 0;
+	border: 1px solid rgb(128, 128, 128);
+	border-radius: 0.5rem;
+	display: inline-block;
+}
+.board-list-section > .list-footer > .search-box > select {
+	border: none;
+	margin: 0 3px;
+}
+.board-list-section > .list-footer > .search-box > input {
+	border: solid rgb(128, 128, 128);
+	border-width: 0 0 0 1px;
+	width: 265px;
+	height: 28px;
+	padding-left: 10px;
+}
+
+</style>
+</html>
